@@ -3,16 +3,25 @@ import React from 'react';
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
 import { Grid, Card, CardHeader, CardContent, Typography, Divider, LinearProgress } from '@mui/material';
-
+import Breadcrumb from 'component/Breadcrumb';
+import { Link } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import CheckIcon from '@mui/icons-material/Check';
 //project import
 import SalesLineCard from 'views/Dashboard/card/SalesLineCard';
 import SalesLineCardData from 'views/Dashboard/card/sale-chart-1';
 import RevenuChartCard from 'views/Dashboard/card/RevenuChartCard';
 import RevenuChartCardData from 'views/Dashboard/card/revenu-chart';
 import ReportCard from './ReportCard';
-
+import { Chip } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
+import { Stack } from '@mui/material';
+import { ProductionQuantityLimits } from '@mui/icons-material';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 import { gridSpacing } from 'config.js';
-
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 // assets
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
@@ -40,52 +49,242 @@ const Default = () => {
   const theme = useTheme();
 
   return (
+    <>
+    <Breadcrumb title="Dahsboard">
+        <Typography component={Link} to="/" variant="subtitle2" color="inherit" className="link-breadcrumb">
+       Accueil
+        </Typography>
+        <Typography variant="subtitle2" color="primary" className="link-breadcrumb">
+         Transactions
+        </Typography>
+      </Breadcrumb>
+
+
+      <Grid container spacing={gridSpacing}>
+        
+          <Grid item lg={4} sm={6} xs={12}>
+            <ReportCard
+              primary={<>Depot </>}     
+                 secondary={ <h2 style={{color:"green",fontSize:26}}>37 </h2>}
+              primaryIcon={<Fab color="success" aria-label="add">
+              <ArrowUpwardIcon/>
+              </Fab>}
+          
+              footerData={ 
+                <>
+                <Divider/>
+            
+              </>
+              }
+              iconPrimary={MonetizationOnTwoTone}
+              iconFooter={TrendingUpIcon}
+            />
+          </Grid>
+          <Grid item lg={4} sm={6} xs={12}>
+          <ReportCard
+              primary={<>Retraits</>}
+              secondary={ <h2 style={{color:"red",fontSize:26}}>37 </h2>}
+              primaryIcon={<Fab color="error" aria-label="add">
+                <ArrowDownwardIcon color='white' />
+              </Fab>}
+          
+              footerData={ 
+                <>
+                <Divider/>
+            
+              </>
+              }
+              iconPrimary={MonetizationOnTwoTone}
+              iconFooter={TrendingUpIcon}
+            />
+          </Grid>
+          <Grid item lg={4} sm={6} xs={12}>
+          <ReportCard
+              primary={<>Totals des clients </>}
+              secondary={ <h2 style={{color:"blue",fontSize:26}}>37 </h2>}
+              primaryIcon={<Fab color="primary" aria-label="add">
+                <PersonIcon color='white' />
+              </Fab>}
+          
+            
+              iconPrimary={MonetizationOnTwoTone}
+              iconFooter={TrendingUpIcon}
+            />
+          </Grid>
+          </Grid>
+
+
+          <br/><br/>
+          <Breadcrumb title="Transactions">
+    
+     
+      </Breadcrumb>
+
+
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
+        
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
-              primary="$30200"
-              secondary="All Earnings"
-              color={theme.palette.warning.main}
-              footerData="10% changes on profit"
+              primary={<>30.000 Fcfa </>}
+              secondary="Sidiki Dembele"
+              primaryIcon={<Fab color="success" aria-label="add">
+                <ArrowUpwardIcon/>
+                </Fab>}
+          
+              footerData={ 
+                <>
+                <Divider/>
+              <Stack  justifySelf="center"
+              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
+              alignSelf="center"
+              textAlign="center"
+                flexDirection="row"
+                justifyContent="center" className='cursor-pointer' >
+                  <Typography variant="h5" style={{color:"green",cursor:"pointer"}}> Valider <CheckIcon style={{marginBottom:-3}}
+                  /> </Typography>
+              </Stack>
+              </>
+              }
               iconPrimary={MonetizationOnTwoTone}
               iconFooter={TrendingUpIcon}
             />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
-              primary="145"
-              secondary="Task"
-              color={theme.palette.error.main}
-              footerData="28% task performance"
-              iconPrimary={CalendarTodayTwoTone}
-              iconFooter={TrendingDownIcon}
-            />
-          </Grid>
-          <Grid item lg={3} sm={6} xs={12}>
-            <ReportCard
-              primary="290+"
-              secondary="Page Views"
-              color={theme.palette.success.main}
-              footerData="10k daily views"
-              iconPrimary={DescriptionTwoTone}
+              primary={<>30.000 Fcfa </>}
+              secondary="Sidiki Dembele"
+              primaryIcon={<Fab color="error" aria-label="add">
+                <ArrowDownwardIcon/>
+                </Fab>}
+          
+              footerData={ 
+                <>
+                <Divider/>
+                <Stack  justifySelf="center"
+              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
+              alignSelf="center"
+              textAlign="center"
+                flexDirection="row"
+                justifyContent="center" className='cursor-pointer' >
+                  <Typography variant="h5" style={{color:"green",cursor:"pointer"}}> Valider <CheckIcon style={{marginBottom:-3}}
+                  /> </Typography>
+              </Stack>
+              </>
+              }
+              iconPrimary={MonetizationOnTwoTone}
               iconFooter={TrendingUpIcon}
             />
           </Grid>
           <Grid item lg={3} sm={6} xs={12}>
             <ReportCard
-              primary="500"
-              secondary="Downloads"
-              color={theme.palette.primary.main}
-              footerData="1k download in App store"
-              iconPrimary={ThumbUpAltTwoTone}
+              primary={<>30.000 Fcfa </>}
+              secondary="Sidiki Dembele"
+              primaryIcon={<Fab color="success" aria-label="add">
+                <ArrowUpwardIcon/>
+                </Fab>}
+          
+              footerData={ 
+                <>
+                <Divider/>
+                <Stack  justifySelf="center"
+              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
+              alignSelf="center"
+              textAlign="center"
+                flexDirection="row"
+                justifyContent="center" className='cursor-pointer' >
+                  <Typography variant="h5" style={{color:"green",cursor:"pointer"}}> Valider <CheckIcon style={{marginBottom:-3}}
+                  /> </Typography>
+              </Stack>
+              </>
+              }
+              iconPrimary={MonetizationOnTwoTone}
               iconFooter={TrendingUpIcon}
             />
           </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <ReportCard
+              primary={<>30.000 Fcfa </>}
+              secondary="Sidiki Dembele"
+              primaryIcon={<Fab color="success" aria-label="add">
+                <ArrowUpwardIcon/>
+                </Fab>}
+          
+              footerData={ 
+                <>
+                <Divider/>
+                <Stack  justifySelf="center"
+              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
+              alignSelf="center"
+              textAlign="center"
+                flexDirection="row"
+                justifyContent="center" className='cursor-pointer' >
+                  <Typography variant="h5" style={{color:"green",cursor:"pointer"}}> Valider <CheckIcon style={{marginBottom:-3}}
+                  /> </Typography>
+              </Stack>
+              </>
+              }
+              iconPrimary={MonetizationOnTwoTone}
+              iconFooter={TrendingUpIcon}
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <ReportCard
+              primary={<>30.000 Fcfa </>}
+              secondary="Sidiki Dembele"
+              primaryIcon={<Fab color="success" aria-label="add">
+                <ArrowUpwardIcon/>
+                </Fab>}
+          
+              footerData={ 
+                <>
+                <Divider/>
+                <Stack  justifySelf="center"
+              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
+              alignSelf="center"
+              textAlign="center"
+                flexDirection="row"
+                justifyContent="center" className='cursor-pointer' >
+                  <Typography variant="h5" style={{color:"green",cursor:"pointer"}}> Valider <CheckIcon style={{marginBottom:-3}}
+                  /> </Typography>
+              </Stack>
+              </>
+              }
+              iconPrimary={MonetizationOnTwoTone}
+              iconFooter={TrendingUpIcon}
+            />
+          </Grid>
+          <Grid item lg={3} sm={6} xs={12}>
+            <ReportCard
+              primary={<>30.000 Fcfa </>}
+              secondary="Sidiki Dembele"
+              primaryIcon={<Fab color="error" aria-label="add">
+                <ArrowDownwardIcon/>
+                </Fab>}
+          
+              footerData={ 
+                <>
+                <Divider/>
+              <Stack  justifySelf="center"
+              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
+              alignSelf="center"
+              textAlign="center"
+                flexDirection="row"
+                justifyContent="space-between" >
+                  <Typography variant="h5" style={{color:"green"}}> Valider </Typography>
+                    <Typography variant="h5" style={{color:"red"}}> Refuser </Typography>
+              </Stack>
+              </>
+              }
+              iconPrimary={MonetizationOnTwoTone}
+              iconFooter={TrendingUpIcon}
+            />
+          </Grid>
+         
         </Grid>
       </Grid>
-      <Grid item xs={12}>
+   {/*    <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={8} xs={12}>
             <Grid container spacing={gridSpacing}>
@@ -244,8 +443,9 @@ const Default = () => {
             </Card>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Grid>
+    </>
   );
 };
 

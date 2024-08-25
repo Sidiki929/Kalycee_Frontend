@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-
+import { ProductionQuantityLimits } from '@mui/icons-material';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
 
 // ==============================|| REPORT CARD ||============================== //
 
-const ReportCard = ({ primary, secondary, iconPrimary, color, footerData, iconFooter }) => {
+const ReportCard = ({ primary, secondary, iconPrimary, color, footerData, iconFooter ,primaryIcon }) => {
   const theme = useTheme();
   const IconPrimary = iconPrimary;
-  const primaryIcon = iconPrimary ? <IconPrimary fontSize="large" /> : null;
+  //const primaryIcon = iconPrimary ? <IconPrimary fontSize="large" /> : null;
   const IconFooter = iconFooter;
   const footerIcon = iconFooter ? <IconFooter /> : null;
 
@@ -22,36 +22,25 @@ const ReportCard = ({ primary, secondary, iconPrimary, color, footerData, iconFo
             <Typography variant="h3" sx={{ color: color }}>
               {primary}
             </Typography>
-            <Typography variant="subtitle1" sx={{ marginTop: '.5rem' }}>
+            <Typography variant="p" sx={{ marginTop: '.5rem' }}>
               {secondary}
+             
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="h2" sx={{ color: color }}>
-              {primaryIcon}
+              {primaryIcon} 
             </Typography>
           </Grid>
         </Grid>
       </CardContent>
       <Box sx={{ background: color }}>
-        <Grid
-          container
-          justifyContent="space-between"
-          sx={{
-            textAlign: 'center',
-            padding: theme.spacing(1.2),
-            pl: 2.5,
-            pr: 2.5,
-            color: theme.palette.common.white
-          }}
-        >
-          <Grid item>
-            <Typography variant="body2">{footerData}</Typography>
-          </Grid>
-          <Grid item>
-            <Typography variant="body2">{footerIcon}</Typography>
-          </Grid>
-        </Grid>
+       
+              {footerData} 
+              
+           
+     
+    
       </Box>
     </Card>
   );

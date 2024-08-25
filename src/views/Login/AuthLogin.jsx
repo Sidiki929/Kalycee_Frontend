@@ -1,6 +1,4 @@
 import React from 'react';
-
-// material-ui
 import { useTheme } from '@mui/material/styles';
 import {
   Box,
@@ -16,19 +14,16 @@ import {
   InputAdornment,
   IconButton
 } from '@mui/material';
-
-//  third party
+import { useNavigate } from 'react-router';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-// assets
+import axios from 'axios';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Google from 'assets/images/social-google.svg';
-
-// ==============================|| FIREBASE LOGIN ||============================== //
+import swal from 'sweetalert';
 
 const AuthLogin = ({ ...rest }) => {
+  const navigate = useNavigate();
   const theme = useTheme();
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -40,77 +35,83 @@ const AuthLogin = ({ ...rest }) => {
     event.preventDefault();
   };
 
+  const handleLogin = async (values, { setSubmitting, setErrors }) => {
+    try {
+        const response = await axios.post('http://localhost:3002/api/user/loginUser', {
+            username: values.username,
+            password: values.password,
+        });
+
+        if (response.status === 200) {
+            alert('Login successful');
+            window.localStorage.setItem("userData", JSON.stringify(response.data));
+             window.localStorage.setItem("token", response.data.token); 
+            window.localStorage.setItem("loggedIn", true); 
+            window.location.replace('./dashboard/default');
+        } else {
+            // Handle other statuses as needed
+            alert('Login failed. Please try again.');
+            setErrors({ submit: 'Login failed. Please try again.' });
+        }
+    } catch (error) {
+        let errorMessage = 'Login failed. Please check your credentials and try again.';
+        if (error.response && error.response.data && error.response.data.message) {
+            errorMessage = error.response.data.message;
+        }
+
+        // Affiche une alerte JavaScript pour les erreurs
+        alert(errorMessage);
+        setErrors({ submit: errorMessage });
+    } finally {
+        setSubmitting(false);
+    }
+};
+
+
+
   return (
     <>
       <Grid container justifyContent="center">
         <Grid item xs={12}>
-          <Button
-            fullWidth={true}
-            sx={{
-              fontSize: { md: '1rem', xs: '0.875rem' },
-              fontWeight: 500,
-              backgroundColor: theme.palette.grey[50],
-              color: theme.palette.grey[600],
-              textTransform: 'capitalize',
-              '&:hover': {
-                backgroundColor: theme.palette.grey[100]
-              }
-            }}
-            size="large"
-            variant="contained"
-          >
-            <img
-              src={Google}
-              alt="google"
-              width="20px"
-              style={{
-                marginRight: '16px',
-                '@media (maxWidth:899.95px)': {
-                  marginRight: '8px'
-                }
-              }}
-            />{' '}
-            Sign in with Google
-          </Button>
+          {/* Additional content can be added here if needed */}
         </Grid>
       </Grid>
 
-      <Box alignItems="center" display="flex" mt={2}>
-        <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-        <Typography color="textSecondary" variant="h5" sx={{ m: theme.spacing(2) }}>
-          OR
-        </Typography>
-        <Divider sx={{ flexGrow: 1 }} orientation="horizontal" />
-      </Box>
+    
 
       <Formik
         initialValues={{
-          email: '',
+          username: '',
           password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+          username: Yup.string().max(255).required('Username is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
+        onSubmit={handleLogin}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...rest}>
             <TextField
-              error={Boolean(touched.email && errors.email)}
+              error={Boolean(touched.username && errors.username)}
               fullWidth
-              helperText={touched.email && errors.email}
-              label="Email Address / Username"
+              helperText={touched.username && errors.username}
+              label="Username"
               margin="normal"
-              name="email"
+              name="username"
               onBlur={handleBlur}
               onChange={handleChange}
-              type="email"
-              value={values.email}
+              type="text"
+              value={values.username}
               variant="outlined"
             />
 
-            <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ mt: theme.spacing(3), mb: theme.spacing(1) }}>
+            <FormControl
+              fullWidth
+              error={Boolean(touched.password && errors.password)}
+              sx={{ mt: theme.spacing(3), mb: theme.spacing(1) }}
+            >
               <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
@@ -127,8 +128,7 @@ const AuthLogin = ({ ...rest }) => {
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
                       edge="end"
-                      size="large"
-                    >
+                      size="large"  >
                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
@@ -136,18 +136,12 @@ const AuthLogin = ({ ...rest }) => {
               />
               {touched.password && errors.password && (
                 <FormHelperText error id="standard-weight-helper-text">
-                  {' '}
-                  {errors.password}{' '}
+                  {errors.password}
                 </FormHelperText>
               )}
             </FormControl>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Typography variant="subtitle2" color="primary" sx={{ textDecoration: 'none' }}>
-                  Forgot Password?
-                </Typography>
-              </Grid>
-            </Grid>
+
+           
 
             {errors.submit && (
               <Box mt={3}>
@@ -156,8 +150,15 @@ const AuthLogin = ({ ...rest }) => {
             )}
 
             <Box mt={2}>
-              <Button color="primary" disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained">
-                Log In
+              <Button
+                color="primary"
+                disabled={isSubmitting}
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+              >
+              Connexion
               </Button>
             </Box>
           </form>

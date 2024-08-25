@@ -44,10 +44,10 @@ const Login = () => {
                 <Grid container justifyContent="space-between">
                   <Grid item>
                     <Typography color="textPrimary" gutterBottom variant="h2">
-                      Sign in
+                    Connexion
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      To keep connected with us.
+                    
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -62,15 +62,7 @@ const Login = () => {
               </Grid>
               <Grid container justifyContent="flex-start" sx={{ mt: theme.spacing(2), mb: theme.spacing(1) }}>
                 <Grid item>
-                  <Typography
-                    variant="subtitle2"
-                    color="secondary"
-                    component={RouterLink}
-                    to="/application/register"
-                    sx={{ textDecoration: 'none', pl: 2 }}
-                  >
-                    Create new account
-                  </Typography>
+               
                 </Grid>
               </Grid>
             </Grid>

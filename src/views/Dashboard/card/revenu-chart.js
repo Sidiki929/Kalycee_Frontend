@@ -11,7 +11,7 @@ export default {
       min: 0,
       max: 100
     },
-    labels: ['Youtube', 'Facebook', 'Twitter'],
+    labels: ['Envoie ', 'Recus',],
     legend: {
       show: true,
       position: 'bottom',
@@ -24,7 +24,7 @@ export default {
       horizontal: 10,
       vertical: 10
     },
-    colors: [value.error, value.primary, value.info]
+    colors: [ value.primary, value.info]
   },
-  series: [1258, 975, 500]
+  series: [ 975, 500]
 };

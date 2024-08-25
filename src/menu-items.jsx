@@ -8,15 +8,16 @@ import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
 import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
-
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import PersonIcon from '@mui/icons-material/Person';
 const icons = {
   NavigationOutlinedIcon: NavigationOutlinedIcon,
   HomeOutlinedIcon: HomeOutlinedIcon,
   ChromeReaderModeOutlinedIcon: ChromeReaderModeOutlinedIcon,
-  HelpOutlineOutlinedIcon: HelpOutlineOutlinedIcon,
+  HelpOutlineOutlinedIcon: HelpOutlineOutlinedIcon,AttachMoneyIcon,
   SecurityOutlinedIcon: SecurityOutlinedIcon,
   AccountTreeOutlinedIcon: AccountTreeOutlinedIcon,
-  BlockOutlinedIcon: BlockOutlinedIcon,
+  BlockOutlinedIcon: BlockOutlinedIcon,PersonIcon,
   AppsOutlinedIcon: AppsOutlinedIcon,
   ContactSupportOutlinedIcon: ContactSupportOutlinedIcon
 };
@@ -28,7 +29,7 @@ export default {
   items: [
     {
       id: 'navigation',
-      title: 'Materially',
+      title: 'KALYCEE',
       caption: 'Dashboard',
       type: 'group',
       icon: icons['NavigationOutlinedIcon'],
@@ -39,10 +40,27 @@ export default {
           type: 'item',
           icon: icons['HomeOutlinedIcon'],
           url: '/dashboard/default'
-        }
+        },
+
+         {
+          id: 'transactions',
+          title: 'Liste des transactions',
+          type: 'item',
+          icon: icons['AttachMoneyIcon'],
+          url: '/view/Transactions'
+        },
+
+        {
+          id: 'profile',
+          title: 'Profile',
+          type: 'item',
+          icon: icons['PersonIcon'],
+          url: '/view/Profile'
+        },
+         
       ]
     },
-    {
+   /*  {
       id: 'pages',
       title: 'Pages',
       caption: 'Prebuild Pages',
@@ -103,8 +121,8 @@ export default {
           icon: icons['FormatColorTextOutlinedIcon']
         }
       ]
-    },
-    {
+    }, */
+  /*   {
       id: 'support',
       title: 'Support',
       type: 'group',
@@ -132,6 +150,6 @@ export default {
           target: true
         }
       ]
-    }
+    } */
   ]
 };

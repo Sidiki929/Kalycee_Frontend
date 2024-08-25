@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-
+import Person from '@mui/icons-material/Person';
+import Button from '@mui/material/Button';
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { Box, Card, CardContent, CardHeader, Divider, Grid, Typography, useMediaQuery } from '@mui/material';
@@ -21,7 +22,7 @@ const RevenuChartCard = ({ chartData }) => {
       <CardHeader
         title={
           <Typography t="div" className="card-header">
-            Total Revenue
+         
           </Typography>
         }
       />
@@ -29,10 +30,18 @@ const RevenuChartCard = ({ chartData }) => {
       <CardContent>
         <Grid container spacing={2} direction={matchDownMd && !matchDownXs ? 'row' : 'column'}>
           <Grid item xs={12} sm={7} md={12}>
-            <Chart {...chartData} />
+            <center>
+            <Person sx={{fontSize:160}}/>
+
+            <Typography variant="h3">Sidiki Dembele</Typography>
+
+
+            <Typography variant="h6">Administrateur</Typography>
+            </center>
+<Divider/>
           </Grid>
           <Grid item sx={{ display: { md: 'block', sm: 'none' } }}>
-            <Divider />
+          
           </Grid>
           <Grid
             item
@@ -46,33 +55,31 @@ const RevenuChartCard = ({ chartData }) => {
           >
             <Grid item>
               <Grid container direction="column">
-                <Typography variant="h6">Youtube</Typography>
-                <Typography variant="subtitle1" sx={{ color: theme.palette.primary.main }}>
-                  + 16.85%
-                </Typography>
+                <Typography variant="h6"></Typography>
+                <Button style={{background:theme.palette.primary.main}}>   <Typography variant="subtitle1" sx={{color:"white"}} >
+                Modifer informations
+                </Typography></Button> 
               </Grid>
             </Grid>
+           
             <Grid item>
               <Grid container direction="column">
-                <Typography variant="h6">Facebook</Typography>
-                <Box color={theme.palette.success.main}>
-                  <Typography variant="subtitle1" color="inherit">
-                    +45.36%
-                  </Typography>
-                </Box>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Grid container direction="column">
-                <Typography variant="h6">Twitter</Typography>
-                <Typography variant="subtitle1" sx={{ color: theme.palette.warning.main }}>
-                  - 50.69%
-                </Typography>
+              <Button style={{background:theme.palette.warning.main}}>  <Typography variant="subtitle1" >
+                Modifer mot de passe
+                </Typography></Button> 
               </Grid>
             </Grid>
           </Grid>
         </Grid>
+        
       </CardContent>
+    
+           <center>
+              <Button style={{background:theme.palette.error.main}}>  <Typography variant="subtitle1" sx={{color:"white"}}>
+               Deconnexion
+                </Typography></Button> 
+           
+                </center><br/>
     </Card>
   );
 };

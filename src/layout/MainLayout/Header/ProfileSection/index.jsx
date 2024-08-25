@@ -95,35 +95,30 @@ const ProfileSection = () => {
                     borderRadius: '10px'
                   }}
                 >
-                  <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
+              {/*     <ListItemButton selected={selectedIndex === 0} onClick={(event) => handleListItemClick(event, 0)}>
                     <ListItemIcon>
                       <SettingsTwoToneIcon />
                     </ListItemIcon>
                     <ListItemText primary="Settings" />
-                  </ListItemButton>
+                  </ListItemButton> */}
                   <ListItemButton selected={selectedIndex === 1} onClick={(event) => handleListItemClick(event, 1)}>
                     <ListItemIcon>
                       <PersonTwoToneIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Profile" />
+                    <ListItemText primary="Sidiki Dembele" />
                   </ListItemButton>
-                  <ListItemButton selected={selectedIndex === 2} onClick={(event) => handleListItemClick(event, 2)}>
-                    <ListItemIcon>
-                      <DraftsTwoToneIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="My Messages" />
-                  </ListItemButton>
-                  <ListItemButton selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)}>
+                  
+                 {/*  <ListItemButton selected={selectedIndex === 3} onClick={(event) => handleListItemClick(event, 3)}>
                     <ListItemIcon>
                       <LockOpenTwoTone />
                     </ListItemIcon>
                     <ListItemText primary="Lock Screen" />
-                  </ListItemButton>
+                  </ListItemButton> */}
                   <ListItemButton selected={selectedIndex === 4}>
                     <ListItemIcon>
                       <MeetingRoomTwoToneIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Logout" />
+                    <ListItemText primary="Déconnexion" />
                   </ListItemButton>
                 </List>
               </ClickAwayListener>
