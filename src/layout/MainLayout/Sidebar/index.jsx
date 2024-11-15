@@ -54,7 +54,7 @@ const Sidebar = ({ drawerOpen, drawerToggle, window }) => {
       <Divider />
       <PerfectScrollbar style={{ height: 'calc(100vh - 65px)', padding: '10px' }}>
         <MenuList />
-   
+
       </PerfectScrollbar>
     </>
   );

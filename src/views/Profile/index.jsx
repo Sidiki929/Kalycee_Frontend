@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useState , useEffect} from 'react';
 
 // material-ui
 import { useTheme, styled } from '@mui/material/styles';
@@ -47,30 +47,33 @@ const FlatCardBlock = styled((props) => <Grid item sm={6} xs={12} {...props} />)
 
 const Profile = () => {
   const theme = useTheme();
+const [userData, setUserData] = useState(null);
 
+    useEffect(() => {
+        // Récupérer les données de l'utilisateur depuis localStorage
+        const storedUserData = JSON.parse(window.localStorage.getItem("userData"));
+        setUserData(storedUserData);
+    }, []);
+
+    
   return (
     <>
     <Breadcrumb title="Profile">
-        <Typography component={Link} to="/" variant="subtitle2" color="inherit" className="link-breadcrumb">
-       Accueil
-        </Typography>
-        <Typography variant="subtitle2" color="primary" className="link-breadcrumb">
-         Profile
-        </Typography>
+
       </Breadcrumb>
 
 
 
     <Grid container spacing={gridSpacing}>
-    
+
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={8} xs={12}>
             <Grid container spacing={gridSpacing}>
               <Grid item xs={12} sm={6}>
                 <Grid container spacing={gridSpacing}>
-                
-            
+
+
                 </Grid>
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -78,9 +81,9 @@ const Profile = () => {
               </Grid>
             </Grid>
           </Grid>
-        
+
         </Grid>
-      </Grid> 
+      </Grid>
     </Grid>
     </>
   );

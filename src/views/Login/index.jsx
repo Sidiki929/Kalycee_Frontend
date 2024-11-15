@@ -8,8 +8,8 @@ import { Card, CardContent, Typography, Grid } from '@mui/material';
 // project import
 import AuthLogin from './AuthLogin';
 
-// assets
-import Logo from 'assets/images/logo-dark.svg';
+
+import Logo from "../../assets/images/logo_kalycee.png"
 
 // ==============================|| LOGIN ||============================== //
 
@@ -21,7 +21,7 @@ const Login = () => {
       container
       justifyContent="center"
       alignItems="center"
-      sx={{ backgroundColor: theme.palette.common.black, height: '100%', minHeight: '100vh' }}
+      sx={{ backgroundColor: 'gray.50', height: '100%', minHeight: '100vh' }}
     >
       <Grid item xs={11} sm={7} md={6} lg={4}>
         <Card
@@ -39,31 +39,18 @@ const Login = () => {
           }}
         >
           <CardContent sx={{ p: theme.spacing(5, 4, 3, 4) }}>
-            <Grid container direction="column" spacing={4} justifyContent="center">
-              <Grid item xs={12}>
-                <Grid container justifyContent="space-between">
-                  <Grid item>
-                    <Typography color="textPrimary" gutterBottom variant="h2">
-                    Connexion
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary">
-                    
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <RouterLink to="/">
-                      <img alt="Auth method" src={Logo} />
-                    </RouterLink>
-                  </Grid>
-                </Grid>
-              </Grid>
+
+
+            <Grid  direction="column"  justifyContent="center">
+
+
+
+
               <Grid item xs={12}>
                 <AuthLogin />
               </Grid>
               <Grid container justifyContent="flex-start" sx={{ mt: theme.spacing(2), mb: theme.spacing(1) }}>
-                <Grid item>
-               
-                </Grid>
+
               </Grid>
             </Grid>
           </CardContent>

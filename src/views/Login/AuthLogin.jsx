@@ -21,6 +21,7 @@ import axios from 'axios';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import swal from 'sweetalert';
+import Logo from "../../assets/images/logo_kalycee.png"
 
 const AuthLogin = ({ ...rest }) => {
   const navigate = useNavigate();
@@ -43,23 +44,27 @@ const AuthLogin = ({ ...rest }) => {
         });
 
         if (response.status === 200) {
-            alert('Login successful');
+            alert('Connexion réussie !');
+
+            // Stocker les informations utilisateur dans localStorage
             window.localStorage.setItem("userData", JSON.stringify(response.data));
-             window.localStorage.setItem("token", response.data.token); 
-            window.localStorage.setItem("loggedIn", true); 
-            window.location.replace('./dashboard/default');
+            window.localStorage.setItem("token", response.data.token);
+            window.localStorage.setItem("loggedIn", true);
+
+            // Rediriger vers la page d'accueil
+            window.location.href = '/kalycee/home/';
         } else {
-            // Handle other statuses as needed
-            alert('Login failed. Please try again.');
-            setErrors({ submit: 'Login failed. Please try again.' });
+            alert('Échec de la connexion. Veuillez réessayer.');
+            setErrors({ submit: 'Échec de la connexion. Veuillez réessayer.' });
         }
     } catch (error) {
-        let errorMessage = 'Login failed. Please check your credentials and try again.';
+        let errorMessage = 'Erreur de connexion. Veuillez vérifier vos informations.';
+        
+        // Si le serveur renvoie une réponse d'erreur
         if (error.response && error.response.data && error.response.data.message) {
             errorMessage = error.response.data.message;
         }
-
-        // Affiche une alerte JavaScript pour les erreurs
+        
         alert(errorMessage);
         setErrors({ submit: errorMessage });
     } finally {
@@ -71,13 +76,16 @@ const AuthLogin = ({ ...rest }) => {
 
   return (
     <>
-      <Grid container justifyContent="center">
-        <Grid item xs={12}>
-          {/* Additional content can be added here if needed */}
-        </Grid>
-      </Grid>
+      <Grid container justifyContent="center" >
 
-    
+        <div   >
+          <img  style={{height:250,width:260,textAlign:"center",
+justifyContent:"center",padding:0,marginTop:-70,
+
+          }} src={Logo} />
+              </div>
+     <h2 style={{marginTop:-50,fontSize:29}}>Connexion</h2>
+      </Grid>
 
       <Formik
         initialValues={{
@@ -86,8 +94,8 @@ const AuthLogin = ({ ...rest }) => {
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          username: Yup.string().max(255).required('Username is required'),
-          password: Yup.string().max(255).required('Password is required')
+          username: Yup.string().max(255).required("Nom d'utilisateur requis"),
+          password: Yup.string().max(255).required('Mot de passe requis')
         })}
         onSubmit={handleLogin}
       >
@@ -97,7 +105,7 @@ const AuthLogin = ({ ...rest }) => {
               error={Boolean(touched.username && errors.username)}
               fullWidth
               helperText={touched.username && errors.username}
-              label="Username"
+              label="Nom d'utilisateur"
               margin="normal"
               name="username"
               onBlur={handleBlur}
@@ -112,7 +120,7 @@ const AuthLogin = ({ ...rest }) => {
               error={Boolean(touched.password && errors.password)}
               sx={{ mt: theme.spacing(3), mb: theme.spacing(1) }}
             >
-              <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password">Mot de passe</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password"
                 type={showPassword ? 'text' : 'password'}
@@ -141,7 +149,7 @@ const AuthLogin = ({ ...rest }) => {
               )}
             </FormControl>
 
-           
+
 
             {errors.submit && (
               <Box mt={3}>
@@ -151,7 +159,7 @@ const AuthLogin = ({ ...rest }) => {
 
             <Box mt={2}>
               <Button
-                color="primary"
+                style={{background:"black"}}
                 disabled={isSubmitting}
                 fullWidth
                 size="large"

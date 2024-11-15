@@ -10,7 +10,11 @@ import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import PersonIcon from '@mui/icons-material/Person';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
 const icons = {
+  CurrencyExchangeIcon:CurrencyExchangeIcon,
+  SpaceDashboardIcon:SpaceDashboardIcon,
   NavigationOutlinedIcon: NavigationOutlinedIcon,
   HomeOutlinedIcon: HomeOutlinedIcon,
   ChromeReaderModeOutlinedIcon: ChromeReaderModeOutlinedIcon,
@@ -38,15 +42,15 @@ export default {
           id: 'dashboard',
           title: 'Dashboard',
           type: 'item',
-          icon: icons['HomeOutlinedIcon'],
-          url: '/dashboard/default'
+          icon: icons['SpaceDashboardIcon'],
+          url: '/home'
         },
 
          {
           id: 'transactions',
           title: 'Liste des transactions',
           type: 'item',
-          icon: icons['AttachMoneyIcon'],
+          icon: icons['CurrencyExchangeIcon'],
           url: '/view/Transactions'
         },
 

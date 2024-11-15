@@ -7,7 +7,7 @@ import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
 
 // ==============================|| REPORT CARD ||============================== //
 
-const ReportCard = ({ primary, secondary, iconPrimary, color, footerData, iconFooter ,primaryIcon }) => {
+const ReportCard = ({ primary, secondary, theDate,iconPrimary, color, footerData, iconFooter ,primaryIcon }) => {
   const theme = useTheme();
   const IconPrimary = iconPrimary;
   //const primaryIcon = iconPrimary ? <IconPrimary fontSize="large" /> : null;
@@ -23,24 +23,18 @@ const ReportCard = ({ primary, secondary, iconPrimary, color, footerData, iconFo
               {primary}
             </Typography>
             <Typography variant="p" sx={{ marginTop: '.5rem' }}>
-              {secondary}
-             
+              {secondary}<br/>{theDate}
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="h2" sx={{ color: color }}>
-              {primaryIcon} 
+              {primaryIcon}
             </Typography>
           </Grid>
         </Grid>
       </CardContent>
       <Box sx={{ background: color }}>
-       
-              {footerData} 
-              
-           
-     
-    
+              {footerData}
       </Box>
     </Card>
   );

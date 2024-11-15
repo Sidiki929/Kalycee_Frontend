@@ -1,5 +1,4 @@
 import React, { lazy } from 'react';
-
 // project import
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'component/Loadable';
@@ -9,19 +8,13 @@ const DashboardDefault = Loadable(lazy(() => import('views/Dashboard/Default')))
 const UtilsTypography = Loadable(lazy(() => import('views/Utils/Typography')));
 const SamplePage = Loadable(lazy(() => import('views/SamplePage')));
 const Transactions = Loadable(lazy(() => import('views/Transactions')));
-
 // ==============================|| MAIN ROUTES ||============================== //
-
 const MainRoutes = {
   path: '/',
-  element: <Login />,
+  element: <MainLayout />,
   children: [
     {
-      path: '/',
-      element: <DashboardDefault />
-    },
-    {
-      path: '/dashboard/default',
+      path: '/home',
       element: <DashboardDefault />
     },
     {
@@ -32,9 +25,18 @@ const MainRoutes = {
       path: '/view/Profile',
       element: <Profile />
     },
-    { path: '/utils/util-typography', element: <UtilsTypography /> },
-    { path: '/sample-page', element: <SamplePage /> }
+    {
+      path: '/utils/util-typography',
+      element: <UtilsTypography />
+    },
+    {
+      path: '/sample-page',
+      element: <SamplePage />
+    },
+   
+   
   ]
 };
+
 
 export default MainRoutes;

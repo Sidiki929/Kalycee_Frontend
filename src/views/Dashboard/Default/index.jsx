@@ -1,7 +1,9 @@
-import React from 'react';
+import React , {useEffect , useState} from 'react';
 
 // material-ui
+
 import { useTheme, styled } from '@mui/material/styles';
+import Box  from '@mui/material/Box';
 import { Grid, Card, CardHeader, CardContent, Typography, Divider, LinearProgress } from '@mui/material';
 import Breadcrumb from 'component/Breadcrumb';
 import { Link } from 'react-router-dom';
@@ -29,6 +31,9 @@ import MonetizationOnTwoTone from '@mui/icons-material/MonetizationOnTwoTone';
 import DescriptionTwoTone from '@mui/icons-material/DescriptionTwoTone';
 import ThumbUpAltTwoTone from '@mui/icons-material/ThumbUpAltTwoTone';
 import CalendarTodayTwoTone from '@mui/icons-material/CalendarTodayTwoTone';
+import Transactions from "../../Transactions";
+import { format } from 'date-fns';
+import axios from 'axios';
 
 // custom style
 const FlatCardBlock = styled((props) => <Grid item sm={6} xs={12} {...props} />)(({ theme }) => ({
@@ -46,244 +51,273 @@ const FlatCardBlock = styled((props) => <Grid item sm={6} xs={12} {...props} />)
 // ==============================|| DASHBOARD DEFAULT ||============================== //
 
 const Default = () => {
+
+
+  const [transactions, setTransactions] = useState([]);
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    const fetchAllTransactions = async () => {
+      try {
+        // Lancer les deux requêtes en parallèle avec Promise.all
+        const [getTransactions, getAlluser] = await Promise.all([
+          axios.get("https://kalycee-backend.vercel.app/api/transactions/getall"),
+          axios.get("https://kalycee-backend.vercel.app/api/user/getAllUser")
+        ]);
+    
+        // Vérifier la validité des réponses des deux API
+        if (getTransactions.status === 200 && getAlluser.status === 200) {
+          setTransactions(getTransactions.data); // Mettre à jour l'état des transactions
+          setUsers(getAlluser.data);             // Mettre à jour l'état des utilisateurs
+        } else {
+          console.error('Erreur lors de la récupération des données');
+        }
+      } catch (error) {
+        // Gérer l'erreur
+        console.error('Erreur lors de la récupération des données:', error);
+      }
+    };
+    
+
+    fetchAllTransactions();
+  }, []);
   const theme = useTheme();
+    const columns = [
+        { id: 'name', label: 'Nom ', minWidth: 170 },
+        { id: 'phone', label: 'Numéro de téléphone', minWidth: 100 },
+        {
+            id: 'montant',
+            label: "Montant",
+            minWidth: 170,
+            align: 'right',
+            format: (value) => value.toLocaleString('en-US'),
+        },
+        {
+            id: 'type',
+            label: "Type de transfert",
+            minWidth: 170,
+            align: 'right',
+            format: (value) => value.toLocaleString('en-US'),
+        },
+        {
+            id: 'date',
+            label: "Date",
+            minWidth: 170,
+            align: 'right',
+            format: (value) => value.toLocaleString('en-US'),
+        },
+        {
+            id: 'statut',
+            label: 'Statut',
+            minWidth: 170,
+            align: 'right',
+            format: (value) => value.toFixed(2),
+        },
+    ];
+
+    function createData(name, phone,montant, type, date, statut ) {
+        // const density = population / size;
+        return { name, phone,montant, type, date, statut };
+    }
+
+    
+
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event) => {
+        setAge(event.target.value);
+    };
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+    const totalDeposits = transactions?.filter((transaction) => transaction.transfertType === 'envoi').length;
+    const totalRetrait = transactions?.filter((transaction) => transaction.transfertType === 'retrait').length;
+    const updateTransactionStatus = async (transactionId) => {
+        try {
+            const response = await axios.put(
+                `https://kalycee-backend.vercel.app/api/transactions/update/${transactionId}`
+            );
+            if (response.status === 200) {
+                console.log("Statut mis à jour avec succès :", response.data);
+                // Mettre à jour localement après succès
+                setTransactions((prevTransactions) =>
+                    prevTransactions.map((transaction) =>
+                        transaction._id === transactionId
+                            ? { ...transaction, transfertState: "accepted" }
+                            : transaction
+                    )
+                );
+                setTransactions((prevTransactions) =>
+                    prevTransactions.filter((transaction) => transaction._id !== transactionId)
+                );
+            }
+        } catch (error) {
+            console.error("Erreur lors de la mise à jour du statut :", error);
+        }
+    };
 
   return (
     <>
     <Breadcrumb title="Dahsboard">
         <Typography component={Link} to="/" variant="subtitle2" color="inherit" className="link-breadcrumb">
-       Accueil
+       KALYCEE
         </Typography>
         <Typography variant="subtitle2" color="primary" className="link-breadcrumb">
-         Transactions
+         Dashboard
         </Typography>
       </Breadcrumb>
-
-
-      <Grid container spacing={gridSpacing}>
-        
+      <Grid container spacing={gridSpacing} style={{marginTop:-35}}>
           <Grid item lg={4} sm={6} xs={12}>
-            <ReportCard
-              primary={<>Depot </>}     
-                 secondary={ <h2 style={{color:"green",fontSize:26}}>37 </h2>}
-              primaryIcon={<Fab color="success" aria-label="add">
-              <ArrowUpwardIcon/>
-              </Fab>}
-          
-              footerData={ 
-                <>
-                <Divider/>
-            
-              </>
-              }
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
-            />
-          </Grid>
-          <Grid item lg={4} sm={6} xs={12}>
-          <ReportCard
-              primary={<>Retraits</>}
-              secondary={ <h2 style={{color:"red",fontSize:26}}>37 </h2>}
-              primaryIcon={<Fab color="error" aria-label="add">
-                <ArrowDownwardIcon color='white' />
-              </Fab>}
-          
-              footerData={ 
-                <>
-                <Divider/>
-            
-              </>
-              }
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
-            />
+              <Card>
+                  <CardContent>
+                      <Grid container justifyContent="space-between" alignItems="center">
+                          <Grid item>
+                              <Typography variant="h3" sx={{ color: "none" }}>
+                                  Dépôts
+                              </Typography>
+                              <Typography variant="p" sx={{marginTop: '.5rem'}}>
+                                  <h3 style={{color: "green", fontSize: 24}}>{totalDeposits} </h3>
+                              </Typography>
+                          </Grid>
+                          <Grid item>
+                              <Typography variant="h2" sx={{ color: "none" }}>
+                                  <Fab color="success" aria-label="add">
+                                      <ArrowUpwardIcon style={{color:"white"}}/>
+                                  </Fab>
+                              </Typography>
+                          </Grid>
+                      </Grid>
+                  </CardContent>
+              </Card>
           </Grid>
           <Grid item lg={4} sm={6} xs={12}>
-          <ReportCard
-              primary={<>Totals des clients </>}
-              secondary={ <h2 style={{color:"blue",fontSize:26}}>37 </h2>}
-              primaryIcon={<Fab color="primary" aria-label="add">
-                <PersonIcon color='white' />
-              </Fab>}
-          
-            
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
-            />
+              <Card>
+                  <CardContent>
+                      <Grid container justifyContent="space-between" alignItems="center">
+                          <Grid item>
+                              <Typography variant="h3" sx={{ color: "none" }}>
+                                  Retraits
+                              </Typography>
+                              <Typography variant="p" sx={{marginTop: '.3rem'}}>
+                                  <h3 style={{color: "green", fontSize: 24}}>{totalRetrait && totalRetrait} </h3>
+                              </Typography>
+                          </Grid>
+                          <Grid item>
+                              <Typography variant="h2" sx={{ color: "none" }}>
+                                  <Fab color="error" aria-label="add">
+                                      <ArrowDownwardIcon color='white'  />
+                                  </Fab>
+                              </Typography>
+                          </Grid>
+                      </Grid>
+                  </CardContent>
+              </Card>
+
+          </Grid>
+          <Grid item lg={4} sm={6} xs={12}>
+              <Card>
+                  <CardContent>
+                      <Grid container justifyContent="space-between" alignItems="center">
+                          <Grid item>
+                              <Typography variant="h3" sx={{ color: "none" }}>
+                                  Totals des clients
+                              </Typography>
+                              <Typography variant="p" sx={{marginTop: '.3rem'}}>
+                                  <h3 style={{color: "green", fontSize: 24}}>{users?.length} </h3>
+                              </Typography>
+                          </Grid>
+                          <Grid item>
+                              <Typography variant="h2" sx={{ color: "none" }}>
+                                  <Fab color="primary" aria-label="add">
+                                      <PersonIcon color='white' />
+                                  </Fab>
+                              </Typography>
+                          </Grid>
+                      </Grid>
+                  </CardContent>
+              </Card>
           </Grid>
           </Grid>
-
-
-          <br/><br/>
-          <Breadcrumb title="Transactions">
-    
-     
+          <Breadcrumb title="Transactions" style={{marginTop:10}}>
       </Breadcrumb>
-
-
     <Grid container spacing={gridSpacing}>
       <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
-        
-          <Grid item lg={3} sm={6} xs={12}>
+        {transactions.length > 0 ? (
+        transactions.filter((transaction)=>transaction.transfertState === "pending").slice(0,8).map((transaction) => (
+          <Grid item lg={3} sm={6} xs={12} key={transaction.id}>
             <ReportCard
-              primary={<>30.000 Fcfa </>}
-              secondary="Sidiki Dembele"
-              primaryIcon={<Fab color="success" aria-label="add">
-                <ArrowUpwardIcon/>
-                </Fab>}
-          
-              footerData={ 
+              primary={<> {transaction.amount} Fcfa </>} // Affichage du montant de la transaction
+              secondary={`${transaction.nom} ${transaction.prenom}`} // Affichage du nom complet du client
+              primaryIcon={
+                <Fab color={transaction.transfertType === "envoi" ? "success" : "error"} aria-label="add">
+                  {transaction.transfertType === "envoi" ? (
+                    <ArrowUpwardIcon style={{ color: "white" }} />
+                  ) : (
+                    <ArrowDownwardIcon style={{ color: "white" }} />
+                  )}
+                </Fab>
+              }
+              footerData={
                 <>
-                <Divider/>
-              <Stack  justifySelf="center"
-              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
-              alignSelf="center"
-              textAlign="center"
-                flexDirection="row"
-                justifyContent="center" className='cursor-pointer' >
-                  <Typography variant="h5" style={{color:"green",cursor:"pointer"}}> Valider <CheckIcon style={{marginBottom:-3}}
-                  /> </Typography>
-              </Stack>
-              </>
+                  <Divider />
+                  <Stack
+                    justifySelf="center"
+                    style={{
+                      width: "80%",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                      marginBottom: 10,
+                      marginTop: 10,
+                    }}
+                    alignSelf="center"
+                    textAlign="center"
+                    flexDirection="row"
+                    justifyContent="center"
+                    className="cursor-pointer"
+                  >
+                    <Typography
+                      variant="h5"
+                      style={{ color: "green", cursor: "pointer" }}
+                      onClick={() => updateTransactionStatus(transaction?._id)}
+                    >
+                      {transaction.transfertState === "pending" ? (
+                        <b style={{color:"lightseagreen"}}>Valider </b>
+                      ) : (
+                        <>Validé <CheckIcon style={{ marginBottom: -3 }} /></>
+                      )}
+                    </Typography>
+                  </Stack>
+                </>
               }
               iconPrimary={MonetizationOnTwoTone}
               iconFooter={TrendingUpIcon}
-            />
+              theDate={
+                  <Stack>
+                      <b style={{color: "gray"}}>
+                          {/* Formater la date de la transaction */}
+                          {transaction.date_transaction ? format(new Date(transaction.date_transaction), 'dd/MM/yyyy : HH:ss' ) : "Date non disponible"}
+                      </b>
+                      <b style={{color: "orange"}}>En attente </b>
+                  </Stack>
+              }/>
           </Grid>
-          <Grid item lg={3} sm={6} xs={12}>
-            <ReportCard
-              primary={<>30.000 Fcfa </>}
-              secondary="Sidiki Dembele"
-              primaryIcon={<Fab color="error" aria-label="add">
-                <ArrowDownwardIcon/>
-                </Fab>}
-          
-              footerData={ 
-                <>
-                <Divider/>
-                <Stack  justifySelf="center"
-              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
-              alignSelf="center"
-              textAlign="center"
-                flexDirection="row"
-                justifyContent="center" className='cursor-pointer' >
-                  <Typography variant="h5" style={{color:"green",cursor:"pointer"}}> Valider <CheckIcon style={{marginBottom:-3}}
-                  /> </Typography>
-              </Stack>
-              </>
-              }
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
-            />
-          </Grid>
-          <Grid item lg={3} sm={6} xs={12}>
-            <ReportCard
-              primary={<>30.000 Fcfa </>}
-              secondary="Sidiki Dembele"
-              primaryIcon={<Fab color="success" aria-label="add">
-                <ArrowUpwardIcon/>
-                </Fab>}
-          
-              footerData={ 
-                <>
-                <Divider/>
-                <Stack  justifySelf="center"
-              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
-              alignSelf="center"
-              textAlign="center"
-                flexDirection="row"
-                justifyContent="center" className='cursor-pointer' >
-                  <Typography variant="h5" style={{color:"green",cursor:"pointer"}}> Valider <CheckIcon style={{marginBottom:-3}}
-                  /> </Typography>
-              </Stack>
-              </>
-              }
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
-            />
-          </Grid>
-          <Grid item lg={3} sm={6} xs={12}>
-            <ReportCard
-              primary={<>30.000 Fcfa </>}
-              secondary="Sidiki Dembele"
-              primaryIcon={<Fab color="success" aria-label="add">
-                <ArrowUpwardIcon/>
-                </Fab>}
-          
-              footerData={ 
-                <>
-                <Divider/>
-                <Stack  justifySelf="center"
-              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
-              alignSelf="center"
-              textAlign="center"
-                flexDirection="row"
-                justifyContent="center" className='cursor-pointer' >
-                  <Typography variant="h5" style={{color:"green",cursor:"pointer"}}> Valider <CheckIcon style={{marginBottom:-3}}
-                  /> </Typography>
-              </Stack>
-              </>
-              }
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
-            />
-          </Grid>
-          <Grid item lg={3} sm={6} xs={12}>
-            <ReportCard
-              primary={<>30.000 Fcfa </>}
-              secondary="Sidiki Dembele"
-              primaryIcon={<Fab color="success" aria-label="add">
-                <ArrowUpwardIcon/>
-                </Fab>}
-          
-              footerData={ 
-                <>
-                <Divider/>
-                <Stack  justifySelf="center"
-              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
-              alignSelf="center"
-              textAlign="center"
-                flexDirection="row"
-                justifyContent="center" className='cursor-pointer' >
-                  <Typography variant="h5" style={{color:"green",cursor:"pointer"}}> Valider <CheckIcon style={{marginBottom:-3}}
-                  /> </Typography>
-              </Stack>
-              </>
-              }
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
-            />
-          </Grid>
-          <Grid item lg={3} sm={6} xs={12}>
-            <ReportCard
-              primary={<>30.000 Fcfa </>}
-              secondary="Sidiki Dembele"
-              primaryIcon={<Fab color="error" aria-label="add">
-                <ArrowDownwardIcon/>
-                </Fab>}
-          
-              footerData={ 
-                <>
-                <Divider/>
-              <Stack  justifySelf="center"
-              style={{width:"80%",marginLeft:"auto",marginRight:"auto",marginBottom:10,marginTop:10}}
-              alignSelf="center"
-              textAlign="center"
-                flexDirection="row"
-                justifyContent="space-between" >
-                  <Typography variant="h5" style={{color:"green"}}> Valider </Typography>
-                    <Typography variant="h5" style={{color:"red"}}> Refuser </Typography>
-              </Stack>
-              </>
-              }
-              iconPrimary={MonetizationOnTwoTone}
-              iconFooter={TrendingUpIcon}
-            />
-          </Grid>
-         
+        ))
+      ) : (
+        <Typography style={{marginTop:20,marginLeft:17}} variant="h4">Aucune transaction disponible</Typography>
+      )}
+
+
         </Grid>
       </Grid>
+
    {/*    <Grid item xs={12}>
         <Grid container spacing={gridSpacing}>
           <Grid item lg={8} xs={12}>
