@@ -4,5 +4,9 @@
   ],
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
-  ]
+  ],
+
+  "staticFiles": {
+    "public": "public"
+  }
 }
